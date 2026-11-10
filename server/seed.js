@@ -10,10 +10,12 @@ const CateringPackage = require('./models/CateringPackage');
 const Booking = require('./models/Booking');
 const Payment = require('./models/Payment');
 
-const seedData = async () => {
+const seedData = async (isCli = false) => {
   try {
     const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/banquetflow';
-    await mongoose.connect(mongoUri);
+    if (mongoose.connection.readyState !== 1) {
+      await mongoose.connect(mongoUri);
+    }
     console.log('[Seed] Connected to MongoDB...');
 
     // Clear existing collections
@@ -636,12 +638,22 @@ const seedData = async () => {
     console.log(` - 3 Initial Bookings & Simulated Payments`);
     console.log('===========================================================');
 
-    process.exit(0);
+    if (isCli) {
+      process.exit(0);
+    }
+    return { success: true, countHalls: halls.length, countPackages: packages.length };
   } catch (error) {
     console.error('[Seed Error]:', error);
-    process.exit(1);
+    if (isCli) {
+      process.exit(1);
+    }
+    throw error;
   }
 };
 
-seedData();
+if (require.main === module) {
+  seedData(true);
+}
+
+module.exports = { seedData };
 

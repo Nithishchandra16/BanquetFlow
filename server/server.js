@@ -8,8 +8,21 @@ const errorHandler = require('./middleware/errorHandler');
 // Load environment variables
 dotenv.config();
 
-// Connect to MongoDB
-connectDB();
+// Connect to MongoDB & Auto-Seed if empty
+connectDB().then(async () => {
+  try {
+    const BanquetHall = require('./models/BanquetHall');
+    const count = await BanquetHall.countDocuments();
+    if (count === 0) {
+      console.log('[AutoSeed] Empty database detected. Populating initial BanquetFlow sample records...');
+      const { seedData } = require('./seed');
+      await seedData(false);
+      console.log('[AutoSeed] Database initialized successfully!');
+    }
+  } catch (err) {
+    console.warn('[AutoSeed Warning]:', err.message);
+  }
+});
 
 const app = express();
 
@@ -52,6 +65,28 @@ app.use('/api/catering', require('./routes/cateringRoutes'));
 app.use('/api/bookings', require('./routes/bookingRoutes'));
 app.use('/api/payments', require('./routes/paymentRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
+
+// Seed Endpoint (For initial cloud deployment & testing)
+app.all('/api/seed', async (req, res) => {
+  const secretKey = req.query.key || req.body?.key;
+  if (secretKey !== 'banquetflow_sesd_seed_2026') {
+    return res.status(403).json({
+      success: false,
+      message: 'Unauthorized seed trigger. Valid security key required.'
+    });
+  }
+  try {
+    const { seedData } = require('./seed');
+    const result = await seedData(false);
+    res.json({
+      success: true,
+      message: 'Database seeded successfully with initial luxury banquet halls, catering packages, and demo accounts',
+      result
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
 
 // 404 handler for undefined API routes
 app.use('/api/*', (req, res) => {
