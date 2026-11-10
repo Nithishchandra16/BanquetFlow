@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #FAF9F6;
+    color: #252525;
+    overflow-x: hidden;
+  }
+
+  /* Custom luxury scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #FAF9F6;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #D4AF77;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #BE9452;
+  }
+}
+
+@layer components {
+  .btn-gold {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-medium text-navy-900 bg-gold-500 hover:bg-gold-400 active:bg-gold-600 transition-all duration-200 shadow-gold-sm hover:shadow-gold-md hover:-translate-y-0.5 disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .btn-navy {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-medium text-white bg-navy-800 hover:bg-navy-700 active:bg-navy-900 transition-all duration-200 shadow-md hover:-translate-y-0.5 disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-medium text-navy-800 border-2 border-navy-800/20 hover:border-navy-800 hover:bg-navy-800 hover:text-white transition-all duration-200;
+  }
+
+  .card-luxury {
+    @apply bg-white rounded-2xl border border-beige/60 shadow-luxury hover:shadow-xl transition-all duration-300;
+  }
+
+  .glass-panel {
+    @apply bg-white/80 backdrop-blur-md border border-white/40 shadow-luxury;
+  }
+
+  .glass-navy {
+    @apply bg-navy-800/90 backdrop-blur-md border border-gold-500/20 text-white;
+  }
+}
+

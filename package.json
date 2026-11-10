@@ -1,0 +1,23 @@
+{
+  "name": "banquetflow",
+  "version": "1.0.0",
+  "description": "BanquetFlow - Banquet Hall Reservation, Catering Package & Management System (SESD Academic Project)",
+  "scripts": {
+    "server": "npm --prefix server start",
+    "server:dev": "npm --prefix server dev",
+    "client": "npm --prefix client dev",
+    "client:build": "npm --prefix client run build",
+    "seed": "npm --prefix server run seed",
+    "build": "npm --prefix client run build"
+  },
+  "keywords": [
+    "banquet",
+    "reservation-system",
+    "catering-package-management",
+    "mern-stack",
+    "sesd"
+  ],
+  "author": "BanquetFlow Academic Team",
+  "license": "ISC"
+}
+
